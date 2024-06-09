@@ -15,17 +15,11 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           color: gray,
           fontFamily: "Inter",
           fontWeight: FontWeight.bold,
-          fontSize: 18,
+          fontSize: 15,
         ),
       ),
       centerTitle: true, // Center the title in the app bar
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios),
-        onPressed: () {
-          // Action for the back button
-          Navigator.pop(context);
-        },
-      ),
+      backgroundColor: Colors.white, // Set background color to white
       actions: [
         Padding(
           padding: const EdgeInsets.all(8.0),
