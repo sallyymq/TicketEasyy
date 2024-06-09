@@ -28,6 +28,13 @@ class _InfoPageState extends State<InfoPage> {
   }
 
   @override
+  void dispose() {
+    complexController.dispose();
+    statusController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(title: "Update Info"),
@@ -110,10 +117,35 @@ class _InfoPageState extends State<InfoPage> {
   }
 
   void updateBusInfo() async {
+    // Validate the complexController's text
+    if (!_isValidComplex(complexController.text)) {
+      // Show an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.error, color: Colors.white),
+              SizedBox(width: 8),
+              Text('You entered an invalid value!', style: TextStyle(color: Colors.white)),
+            ],
+          ),
+          backgroundColor: Color.fromARGB(255, 171, 14, 3),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    // Update Firestore with valid data
     await FirebaseFirestore.instance.collection('Buses').doc(widget.documentId).update({
       'Complex': complexController.text,
       'Status': statusController.text,
     });
+
     // Show a success message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -124,7 +156,7 @@ class _InfoPageState extends State<InfoPage> {
             Text('Update done successfully', style: TextStyle(color: Colors.white)),
           ],
         ),
-        backgroundColor: orangee, // Use the orangee color from the theme
+        backgroundColor: orangee, 
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
@@ -132,5 +164,10 @@ class _InfoPageState extends State<InfoPage> {
         duration: Duration(seconds: 2),
       ),
     );
+  }
+
+  bool _isValidComplex(String text) {
+    final RegExp regExp = RegExp(r'^(JUST|Amman|on way|-)$');
+    return regExp.hasMatch(text);
   }
 }
