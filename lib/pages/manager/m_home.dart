@@ -15,6 +15,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String searchQuery = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,17 +28,17 @@ class _HomePageState extends State<HomePage> {
           children: [
             SizedBox(height: 40),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Container(
                 height: 45,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40),
-                  color: Color(0xFFF2F2F2),
+                  color: Color.fromARGB(136, 242, 242, 242),
                 ),
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 9.5),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Icon(Icons.search, color: gray),
                     ),
                     Expanded(
@@ -46,6 +48,11 @@ class _HomePageState extends State<HomePage> {
                           hintText: 'Search by the bus number',
                           hintStyle: TextStyle(color: gray.withOpacity(0.7)),
                         ),
+                        onChanged: (value) {
+                          setState(() {
+                            searchQuery = value;
+                          });
+                        },
                       ),
                     ),
                   ],
@@ -67,27 +74,31 @@ class _HomePageState extends State<HomePage> {
 
                   final cardMenu = snapshot.data!.docs;
 
+                  final filteredCards = cardMenu.where((doc) {
+                    var data = doc.data() as Map<String, dynamic>;
+                    var busNumber = (data['id'] ?? '').toString();
+                    return busNumber.contains(searchQuery);
+                  }).toList();
+
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 18,
+                      crossAxisSpacing: 28,
                       mainAxisSpacing: 20,
                       childAspectRatio: 2.5 / 2,
                     ),
-                    itemCount: cardMenu.length,
+                    itemCount: filteredCards.length,
                     itemBuilder: (context, index) {
-                      var data = cardMenu[index].data() as Map<String, dynamic>;
+                      var data = filteredCards[index].data() as Map<String, dynamic>;
                       var card = CCard(
                         Complex: data['Complex'] ?? '', // Ensure a default value
                         Status: data['Status'] ?? '',   // Ensure a default value
                         BusNumber: (data['id'] ?? '').toString(), // Ensure a string value
                       );
-                      // Debugging: Print each card's data
-                      print('id: ${card.BusNumber}, Complex: ${card.Complex}, Status: ${card.Status}');
                       return ManagerCards(
-                        onTap: () => navigateToBusInfo(cardMenu[index].id),
+                        onTap: () => navigateToBusInfo(filteredCards[index].id),
                         card: card,
-                        documentId: cardMenu[index].id,
+                        documentId: filteredCards[index].id,
                       );
                     },
                   );
