@@ -70,7 +70,7 @@ class UserHpCards extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 80), // Added space between the two Text widgets
+              SizedBox(width: 78), // Added space between the two Text widgets
               Text(
                 card.Status,
                 style: TextStyle(
