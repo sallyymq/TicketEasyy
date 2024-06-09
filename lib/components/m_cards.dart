@@ -14,12 +14,12 @@ class ManagerCards extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
             color: bluee.withOpacity(0.18),
             blurRadius: 15,
-            offset: Offset(0, 10),
+            offset: Offset(0, 12),
           ),
         ],
       ),
@@ -32,7 +32,7 @@ class ManagerCards extends StatelessWidget {
             "Bus #" + card.BusNumber,
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 3),
           Row(
             children: [
               const SizedBox(width: 15),
@@ -53,7 +53,7 @@ class ManagerCards extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 3),
           Row(
             children: [
               const SizedBox(width: 22),
@@ -80,11 +80,15 @@ class ManagerCards extends StatelessWidget {
             },
             child: Container(
               height: 25,
-              width: 80,
+              width: 70,
               padding: const EdgeInsets.all(5),
-              margin: EdgeInsets.symmetric(horizontal: 15),
+              margin: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: orangee,
+                  gradient: LinearGradient(
+                    
+          colors: [ Color(0xFFF5840E),Color(0xFFF5840E)], // Orange gradient colors
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,),
                 borderRadius: BorderRadius.circular(18),
               ),
               child: Center(
@@ -93,7 +97,7 @@ class ManagerCards extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 12),
+                    fontSize: 11),
                 ),
               ),
             ),
