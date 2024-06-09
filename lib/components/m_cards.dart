@@ -37,7 +37,7 @@ class ManagerCards extends StatelessWidget {
             children: [
               const SizedBox(width: 15),
               Text(
-                "Complex",
+                "Location",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF59597C),
