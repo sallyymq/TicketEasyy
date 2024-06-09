@@ -209,7 +209,7 @@ Future<void> _checkIfUserIsLoggedIn() async {
               ),
               SizedBox(height: 40),
               Text(
-                isEmployee ? '  ID number' : '  Email address',
+                isEmployee ? '   ID ' : '  Email address',
                 style: TextStyle(
                   color: Color(0xFF59597C),
                   fontSize: 14,
@@ -230,7 +230,7 @@ Future<void> _checkIfUserIsLoggedIn() async {
                   controller: emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return isEmployee ? 'Please enter your ID number' : 'Please enter your email';
+                      return isEmployee ? 'Please enter your ID ' : 'Please enter your email';
                     }
                     if (!isEmployee && (!value.contains('@') || !value.contains('.'))) {
                       return 'Invalid email format';
@@ -326,7 +326,7 @@ Future<void> _checkIfUserIsLoggedIn() async {
                   }
                 },
                 child: const Text(
-                  'Log in',
+                  'Login',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
