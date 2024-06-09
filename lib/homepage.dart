@@ -135,44 +135,49 @@ class _UserHomeState extends State<UserHome> {
         }
 
         final cardMenu = snapshot.data!.docs;
-        final List<QueryDocumentSnapshot> filteredDocs = cardMenu.where((document) {
-          var data = document.data() as Map<String, dynamic>;
-          var complex = data['Complex'] ?? '';
-          if (dropdownValueFrom == 'JUST') {
-            return complex == 'JUST';
-          } else if (dropdownValueFrom == 'Amman') {
-            return complex == 'Amman';
-          }
-          return false;
-        }).toList();
 
-        // Sort to have open buses at the top
-        filteredDocs.sort((a, b) {
-          var aData = a.data() as Map<String, dynamic>;
-          var bData = b.data() as Map<String, dynamic>;
-          var aStatus = aData['Status'] ?? '';
-          var bStatus = bData['Status'] ?? '';
-          if (aStatus == 'open' && bStatus != 'open') {
-            return -1;
-          } else if (aStatus != 'open' && bStatus == 'open') {
-            return 1;
-          }
-          return 0;
-        });
+        // Filter and sort the cardMenu based on status
+        final filteredAndSortedCards = cardMenu
+            .where((document) {
+              var data = document.data() as Map<String, dynamic>;
+              var complex = data['Complex'] ?? '';
+              if (dropdownValueFrom == 'JUST') {
+                return complex == 'JUST';
+              } else if (dropdownValueFrom == 'Amman') {
+                return complex == 'Amman';
+              }
+              return false;
+            })
+            .toList()
+          ..sort((a, b) {
+            var aData = a.data() as Map<String, dynamic>;
+            var bData = b.data() as Map<String, dynamic>;
+            var aStatus = aData['Status'] ?? '';
+            var bStatus = bData['Status'] ?? '';
+            if (aStatus == 'Open' && bStatus != 'Open') {
+              return -1; // a should come before b
+            } else if (aStatus != 'Open' && bStatus == 'Open') {
+              return 1; // b should come before a
+            } else {
+              return 0; // no change in order
+            }
+          });
 
         return Column(
-          children: filteredDocs.map((document) {
-            var data = document.data() as Map<String, dynamic>;
-            var card = CCard(
-              Complex: data['Complex'] ?? '', // Ensure a default value
-              Status: data['Status'] ?? '',   // Ensure a default value
-              BusNumber: (data['id'] ?? '').toString(), // Ensure a string value
-            );
-            return UserHpCards(
-              card: card,
-              documentId: document.id,
-            );
-          }).toList(),
+          children: filteredAndSortedCards
+              .map((document) {
+                var data = document.data() as Map<String, dynamic>;
+                var card = CCard(
+                  Complex: data['Complex'] ?? '', // Ensure a default value
+                  Status: data['Status'] ?? '',   // Ensure a default value
+                  BusNumber: (data['id'] ?? '').toString(), // Ensure a string value
+                );
+                return UserHpCards(
+                  card: card,
+                  documentId: document.id,
+                );
+              })
+              .toList(),
         );
       },
     );
@@ -207,15 +212,14 @@ class _UserHomeState extends State<UserHome> {
           child: FloatingActionButton(
             onPressed: () {
               Navigator.of(context).pushNamed('Purchase');
-              // Action to be performed when the "Buy Now" button is pressed
-              // Add your logic here
+              
             },
             backgroundColor: Colors.transparent,
             elevation: 0,
             child: Text(
               'Buy Now',
               style: TextStyle(
-                color: Colors.white, // White color for text
+                color: Colors.white, 
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
