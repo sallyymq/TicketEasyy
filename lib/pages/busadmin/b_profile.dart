@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketeasy/components/appBar.dart';
 import 'package:ticketeasy/components/b_BNB.dart';
 import 'package:ticketeasy/theme/colors.dart';
+
 class BProfilePage extends StatefulWidget {
   const BProfilePage({Key? key}) : super(key: key);
 
@@ -44,11 +45,17 @@ class _BProfilePageState extends State<BProfilePage> {
               SizedBox(height: 20),
               Text(
                 "Hi, $userName",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF59597C)),
               ),
               Text(
                 "You can view your data here",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF59597C)),
               ),
               SizedBox(height: 30),
               CustomPaint(
@@ -74,67 +81,45 @@ class _BProfilePageState extends State<BProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Your Name",
-                            style: TextStyle(
-                                color: gray.withOpacity(0.75),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
+                            "\nYour Name",
+                            style:TextStyle(
+                              color: Color(0xFF59597C),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           SizedBox(height: 4),
                           Text(
                             userName,
                             style: TextStyle(
-                              color: Color(0xFF222222).withOpacity(0.8),
-                              fontWeight: FontWeight.w500),
+                                color: Color(0xFF222222).withOpacity(0.8),
+                                fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
                       onTap: () {},
                     ),
                     SizedBox(height: 24),
-                    ListTile(
-                      leading: Icon(
-                        Icons.verified_user,
-                        color: orangee,
-                        size: 24,
-                      ),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "ID number",
-                            style: TextStyle(
-                                color: gray.withOpacity(0.75),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "7896542", // Replace with the actual ID if needed
-                            style: TextStyle(
-                              color: Color(0xFF222222).withOpacity(0.8),
-                              fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                      onTap: () {},
-                    ),
-                    SizedBox(height: 15),
+                    
+                    
                   ],
                 ),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 40),
               MaterialButton(
                 onPressed: () async {
                   try {
-                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
                     await prefs.remove('userID');
-                    Navigator.of(context).pushNamedAndRemoveUntil("login", (route) => false);
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil("login", (route) => false);
                   } catch (e) {
                     print("Error signing out: $e");
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Failed to sign out. Please try again later.'),
+                        content:
+                            Text('Failed to sign out. Please try again later.'),
                         duration: Duration(seconds: 3),
                       ),
                     );
@@ -158,7 +143,8 @@ class _BProfilePageState extends State<BProfilePage> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Color.fromARGB(255, 218, 146, 38).withOpacity(0.3),
+                        color:
+                            Color.fromARGB(255, 218, 146, 38).withOpacity(0.3),
                         spreadRadius: 2,
                         blurRadius: 4,
                         offset: Offset(0, 2),
