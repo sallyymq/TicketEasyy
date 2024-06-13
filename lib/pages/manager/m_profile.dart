@@ -22,18 +22,19 @@ class _ProfilePageState extends State<ProfilePage> {
     fetchUserData();
   }
 
-   Future<void> fetchUserData() async {
+  Future<void> fetchUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userNameFromPrefs = prefs.getString('userName');
     setState(() {
       userName = userNameFromPrefs ?? 'User Name';
     });
   }
+
   Future<void> _logout() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.clear();
-  Navigator.of(context).pushNamedAndRemoveUntil('login', (route) => false);
-}
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    Navigator.of(context).pushNamedAndRemoveUntil('login', (route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +51,18 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 20),
               Text(
                 "Hi, $userName",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF59597C),
+                ),
               ),
               Text(
                 "You can view your data here",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF59597C)),
               ),
               SizedBox(height: 30),
               CustomPaint(
@@ -82,12 +90,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           Text(
                             "\nYour Name",
                             style: TextStyle(
-                               color: Color(0xFF59597C),
-            fontFamily: "Inter",
-            fontWeight: FontWeight.bold,
-                             
+                              color: Color(0xFF59597C),
+                              fontFamily: "Inter",
+                              fontWeight: FontWeight.bold,
                               fontSize: 16,
-                             
                             ),
                           ),
                           SizedBox(height: 4),
@@ -102,50 +108,20 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       onTap: () {},
                     ),
-                    SizedBox(height: 15),
-                    ListTile(
-                      leading: Icon(
-                        Icons.verified_user,
-                        color: orangee,
-                        size: 24,
-                      ),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "\nID number",
-                            style: TextStyle(
-                                                color: Color(0xFF59597C),
-            fontFamily: "Inter",
-            fontWeight: FontWeight.bold,
-                             
-                              fontSize: 16,
-                            
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "7896542", // Replace with actual ID if needed
-                            style: TextStyle(
-                              color: Color(0xFF222222).withOpacity(0.8),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {},
-                    ),
+                   
                     SizedBox(height: 15),
                   ],
                 ),
               ),
-              SizedBox(height: 30),
+              SizedBox(height:40),
               MaterialButton(
                 onPressed: () async {
                   await FirebaseAuth.instance.signOut();
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                   await prefs.remove('userID');
-                  Navigator.of(context).pushNamedAndRemoveUntil("login", (route) => false);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil("login", (route) => false);
                 },
                 elevation: 5,
                 shape: RoundedRectangleBorder(
@@ -165,7 +141,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Color.fromARGB(255, 218, 146, 38).withOpacity(0.3),
+                        color:
+                            Color.fromARGB(255, 218, 146, 38).withOpacity(0.3),
                         spreadRadius: 2,
                         blurRadius: 4,
                         offset: Offset(0, 2),
@@ -203,6 +180,12 @@ class LinePainter extends CustomPainter {
     final end = Offset(size.width, 0);
     canvas.drawLine(start, end, paint);
   }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+}
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
